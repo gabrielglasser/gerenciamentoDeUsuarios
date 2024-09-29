@@ -34,5 +34,7 @@ document
       }
     });
 
+    var objectUser = new User(user.name, user.gender, user.birth, user.country, user.email, user.password, user.photo, user.admin);
+    
     addLine(user);
   });
