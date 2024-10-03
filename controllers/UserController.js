@@ -32,18 +32,17 @@ class UserController {
       });
 
       let file = elements[0].files[0];
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (e) => {
+        reject(e);
+      };
       if (file) {
-        fileReader.onload = () => {
-          resolve(fileReader.result);
-        };
-
-        fileReader.onerror = (e) => {
-          reject(e);
-        };
-
         fileReader.readAsDataURL(file);
       } else {
-        resolve(""); 
+        resolve('dist/img/boxed-bg.jpg');
       }
     });
   }
@@ -56,6 +55,8 @@ class UserController {
         if (field.checked) {
           user[field.name] = field.value;
         }
+      } else if (field.name == "admin") {
+        user[field.name] = field.checked;
       } else {
         user[field.name] = field.value;
       }
@@ -74,14 +75,16 @@ class UserController {
   }
 
   addLine(dataUser) {
-    let tr = document.createElement('tr');
 
-    tr.innerHTML = `<td>
+    let te = document.createElement('tr')
+
+    tr.innerHTML =
+      `<td>
                       <img src="${dataUser.photo}" alt="User Image" class="img-circle img-sm">
                     </td>
                     <td>${dataUser.name}</td>
                     <td>${dataUser.email}</td>
-                    <td>${dataUser.admin}</td>
+                    <td>${(dataUser.admin) ? 'Sim' : 'Nao'}</td>
                     <td>${dataUser.birth}</td>
                     <td>
                       <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
