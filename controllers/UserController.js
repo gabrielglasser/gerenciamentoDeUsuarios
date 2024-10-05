@@ -132,9 +132,9 @@ class UserController {
 
       let user = JSON.parse(tr.dataset.user);
 
-      if (user._admin) numberAdmin++;
-
-    });
+      
+      
+      if (user._admin) numberAdmin++;    });
 
     document.querySelector("#number-users").innerHTML = numberUsers;
     document.querySelector("#number-users-admin").innerHTML = numberAdmin;
