@@ -1,6 +1,7 @@
-class User{
-    constructor(name, gender, birth, country, email, password, photo, admin){
+class User {
+    constructor(name, gender, birth, country, email, password, photo, admin) {
 
+        this._id;
         this._name = name;
         this._gender = gender;
         this._birth = birth;
@@ -12,40 +13,44 @@ class User{
         this._register = new Date();
     }
 
-    get register(){
+    get id() {
+        return this._id;
+    }
+
+    get register() {
         return this._register;
     }
 
-    get name(){
+    get name() {
         return this._name;
     }
 
-    get gender(){
+    get gender() {
         return this._gender;
     }
 
-    get birth(){
+    get birth() {
         return this._birth;
     }
 
-    get country(){
+    get country() {
         return this._country;
     }
 
-    get email(){
+    get email() {
         return this._email;
     }
-    get password(){
+    get password() {
         return this._password;
     }
-    get photo(){
+    get photo() {
         return this._photo;
     }
-    get admin(){
+    get admin() {
         return this._admin;
     }
 
-    set photo(value){
+    set photo(value) {
         this._photo = value;
     }
 
@@ -54,19 +59,69 @@ class User{
         for (let name in json) {
 
 
-            switch(name){
+            switch (name) {
 
                 case '_register':
                     this[name] = new Date(json[name]);
-                break;
+                    break;
                 default:
                     this[name] = json[name];
 
             }
-            
+
 
         }
 
     }
+
+    static getUsersStorage() {
+        let users = [];
+
+        if (localStorage.getItem("users")) {
+
+            users = JSON.parse(localStorage.getItem("users"));
+
+        }
+        return users;
+
+    }
+
+    getNewID() {
+
+        if (!window.id) window.id = 0;
+
+        id++;
+
+        return id;
+
+    }
+
+    save() {
+
+        let users = User.getUsersStorage();
+
+        if (this.id > 0) {
+
+            users.map(u => {
+
+                if (u._id === this.id) {
+
+                    u = this;
+
+                }
+
+                return u;
+
+            })
+
+        } else {
+
+            this._id = this.getNewID();
+
+            users.push(this);
+        }
+        localStorage.setItem("users", JSON.stringify(users));
+    }
+
 
 }
