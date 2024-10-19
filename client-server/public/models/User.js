@@ -75,54 +75,44 @@ class User {
     }
 
     static getUsersStorage() {
-
-        return HttpRequest.get('/users');
-
+        return fetch('/users')
+            .then(response => response.json());
     }
-
-    toJSON() {
-        let json = {};
-
-        Object.keys(this).forEach(key => {
-
-            if (this[key] !== undefined) json[key] = this[key]
-
-        })
-
-        return json;
-
-    }
-
+    
     save() {
-
         return new Promise((resolve, reject) => {
             let promise;
-
+    
             if (this.id) {
-
-                promise = HttpRequest.put(`/users/${this.id}`, this.toJSON())
-
+                promise = fetch(`/users/${this.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.toJSON())
+                });
             } else {
-
-                promise = HttpRequest.post(`/users`, this.toJSON())
-
+                promise = fetch('/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.toJSON())
+                });
             }
-
-            promise.then(data => {
-                this.loadFromJSON(data);
-
-                resolve(this);
-            }).catch(e=>{
-                reject(e);
-            })
-        })
+    
+            promise.then(response => response.json())
+                .then(data => {
+                    this.loadFromJSON(data);
+                    resolve(this);
+                })
+                .catch(error => reject(error));
+        });
     }
-
+    
     remove() {
-
-        return HttpRequest.delete(`/users/${this.id}`)
-
+        return fetch(`/users/${this.id}`, {
+            method: 'DELETE'
+        });
     }
-
-
-}
+}  
