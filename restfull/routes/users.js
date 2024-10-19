@@ -22,9 +22,9 @@ module.exports = (app) => {
 
   // Inserir um novo usuário com validação
   route.post([
-    check('name').notEmpty().withMessage('O nome é obrigatório.'),
-    check('email').isEmail().withMessage('O email está inválido')
-  ], (req, res) => {
+    check('_name').notEmpty().withMessage('O nome é obrigatório.'),
+    check('_email').isEmail().withMessage('O email está inválido')
+  ], (req, res, app) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -55,9 +55,9 @@ module.exports = (app) => {
 
   // Editar um usuário com validação
   routeId.put([
-    check('name').optional().notEmpty().withMessage('O nome é obrigatório.'),
-    check('email').optional().isEmail().withMessage('O email está inválido')
-  ], (req, res) => {
+    check('_name').optional().notEmpty().withMessage('O nome é obrigatório.'),
+    check('_email').optional().isEmail().withMessage('O email está inválido')
+  ], (req, res, app) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
