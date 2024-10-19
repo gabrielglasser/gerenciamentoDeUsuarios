@@ -6,8 +6,8 @@ const expressValidator = require('express-validator'); // Para versões mais ant
 let app = express();
 
 // Middlewares para lidar com requisições
-app.use(express.urlencoded({ extended: false })); // Substitui bodyParser.urlencoded
-app.use(express.json()); // Substitui bodyParser.json
+app.use(express.urlencoded({ extended: false, limit:'50mb' })); // Substitui bodyParser.urlencoded
+app.use(express.json({ limit:'50mb' })); // Substitui bodyParser.json
 
 // Carregando rotas e utilidades com Consign
 consign().include('routes').include('utils').into(app);
